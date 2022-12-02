@@ -3,7 +3,7 @@ var infoOutput = true;   //Always true.
 var errorOutput = true;   //Always true.
 var warnOutput = false;  //Always set to false before production and in production environment.
 var debugOutput = false;  //Always set to false before production and in production environment.
-
+var wasShown = 0; //Used for tracking the notification bar.
 
 /* Messaging functions */
 function ssWarn(message) {
@@ -133,3 +133,25 @@ function ssTimelineArrowsOnTop(name, top) {
         $(".mood-node-name-" + name + " .MooDOverlayContainer ").css("z-index", "0");
 }
 
+function ssObserveNotificationBar(searchFor, functionref) {
+    var ssNotificationBarObserver = new MutationObserver(function () {
+        var text = $(".NotificationBar span").text().trim();
+        var shown = $(".NotificationBar span").css("visibility") == 'visible';
+        if (shown && text.length > 4 && text == searchFor) {
+            if (!wasShown) {
+                //console.info("*** Function called.");
+                functionref();
+            }
+            wasShown = 1;
+        }
+
+        if (wasShown && !shown) {
+            wasShown = 0;
+            //console.info("*** Bar hidden, reset.");
+        }
+    });
+
+    if ($(".NotificationBar").length > 0)
+        ssNotificationBarObserver.observe($(".NotificationBar")[0], { attributes: true, childList: false, subtree: true });
+    //console.info("*** Observer in place.");
+}
