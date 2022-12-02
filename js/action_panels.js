@@ -116,6 +116,12 @@ function ssShow(name) {
     $(".mood-node-name-" + name).css("visibility", "visible");
 }
 
+function ssClickButton(name) {
+    if (!$(".mood-node-name-" + name).length > 0) return 0;
+    $(".mood-node-name-" + name + " .mood-button").click();
+    return 1;
+}
+
 function ssExists(name) {
     if ($(".mood-node-name-" + name) && $(".mood-node-name-" + name).length > 0)
         return $(".mood-node-name-" + name).length;
