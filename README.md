@@ -16,6 +16,5 @@ or push a button after an action is finished on the page:
 ssObserveNotificationBar("Save: The save completed successfully",
     function () {
         ssClickButton("run-sync");
-    })
 });
 ```
