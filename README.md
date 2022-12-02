@@ -9,5 +9,11 @@ Example:
   ssHide("project-list");
   ssShow("project-list");
 ```
-
-Soren
+or push a button after an action is finished on the page:
+```js
+ssObserveNotificationBar("Save: The save completed successfully",
+            function () {
+                ssClickButton("run-sync");
+            })
+        });
+```
