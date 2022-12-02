@@ -3,6 +3,8 @@
 This small repository contains standard functions developed for talking to MooD action panels primarily.
 Feel free to contribute via pull requests, raise issues or comment.
 
+The things in this repository are confirmed working on MooD 16 Build 85.01, but use at your own peril. This software comes with no warranties, bla bla.
+
 Example:
 ```js
 ssDropdownValue("select-project"); //Get value from a Dropdown
