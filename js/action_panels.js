@@ -1,194 +1,185 @@
-//prettier-ignore
-{
 // Declare variables
-var infoOutput = true;   //Always true.
-var errorOutput = true;   //Always true.
-var warnOutput = false;  //Always set to false before production and in production environment.
-var debugOutput = false;  //Always set to false before production and in production environment.
+var infoOutput = true; //Always true.
+var errorOutput = true; //Always true.
+var warnOutput = false; //Always set to false before production and in production environment.
+var debugOutput = false; //Always set to false before production and in production environment.
 var wasShown = 0; //Used for tracking the notification bar.
 
 /* Messaging functions */
 function ssWarn(message) {
-    if (warnOutput)
-        console.warn("[SS WARNING] " + message);
+  if (warnOutput)
+      console.warn("[SS WARNING] " + message);
 }
 
 function ssError(message) {
-    if (errorOutput)
-        console.info("[SS ERROR] " + message);
+  if (errorOutput)
+      console.info("[SS ERROR] " + message);
 }
 
 function ssInfo(message) {
-    if (infoOutput)
-        console.info("[SS Info] " + message);
+  if (infoOutput)
+      console.info("[SS Info] " + message);
 }
 
 function ssDebug(message) {
-    if (debugOutput)
-        console.debug("[SS Debug] " + message);
+  if (debugOutput)
+      console.debug("[SS Debug] " + message);
 }
 
 /* Setter functions */
 function ssSetTexteditorValue(name, val) {
-    $(".mood-node-name-" + name + " input")[0].value = val;
+  $(".mood-node-name-" + name + " input")[0].value = val;
 }
 
 function ssSetDropdownValue(name, val) {
-    return ssSetTexteditorValue(name, val);
+  return ssSetTexteditorValue(name, val);
 }
-
 
 /**
  * @desc - Hide multiple elements
  * @param {Array} - Array of elements
  */
 function ssHideMultipleElements(array) {
-    array.forEach((element) => {
-      element.style.visibility = "hidden";
-    });
+  array.forEach((element) => {
+    element.style.visibility = "hidden";
+  });
+}
+
+/**
+ * @desc - Show multiple elements
+ * @param {Array} - Array of elements
+ */
+function ssShowMultipleElements(array) {
+  array.forEach((element) => {
+    element.style.visibility = "visible";
+  });
+}
+
+/**
+ * @desc - Remove an element from the DOM. Use this if you want to be able to target the element in the DOM, but want it to be invisible and not take up space from other elements.
+ * @param {String} - Name of the element
+ */
+function ssRemove(className) {
+  if (ssExists(className)) {
+    document.querySelector(".mood-node-name-" + className).style.display =
+      "none";
+  } else {
+    return null;
   }
-  
-  
-  /**
-   * @desc - Show multiple elements
-   * @param {Array} - Array of elements
-   */
-  function ssShowMultipleElements(array) {
-    array.forEach((element) => {
-      element.style.visibility = "visible";
-    });
+}
+
+/**
+ * @desc - Return an element you removed from the DOM.
+ * @param {STRING} - Name of the element
+ */
+function ssCreate(className) {
+  if (ssExists(className)) {
+    document.querySelector(".mood-node-name-" + className).style.display =
+      "block";
+  } else {
+    return null;
   }
-  
-  
-  /**
-   * @desc - Remove an element from the DOM. Use this if you want to be able to target the element in the DOM, but want it to be invisible and not take up space from other elements.
-   * @param {String} - Name of the element
-   */
-  function ssRemove(className) {
-    if (ssExists(className)) {
-      document.querySelector(".mood-node-name-" + className).style.display =
-        "none";
-    } else {
-      return null;
-    }
+}
+
+/**
+ * @desc - Destroy target element. It can't be regenerated.
+ * @param {STRING} - Name of the element
+ */
+function ssKill(className) {
+  if (ssExists(className)) {
+    document.querySelector(".mood-node-name-" + className).remove();
+  } else {
+    return null;
   }
-  
-  
-  /**
-   * @desc - Return an element you removed from the DOM.
-   * @param {STRING} - Name of the element
-   */
-  function ssCreate(className) {
-    if (ssExists(className)) {
-      document.querySelector(".mood-node-name-" + className).style.display =
-        "block";
-    } else {
-      return null;
-    }
+}
+
+/**
+ * @desc - Add an "explanation-text/tooltip" to an element, that will display when the cursor hover overs it
+ * @param {String} - Name of the element
+ * @param {String} - The text to be displayed. This can be a long text.
+ * @param {String} - Top position in pixels example "0px" or "-150px" or "150px"
+ * @param {String} - Left position in pixels example "0px" or "-150px" or "150px"
+ */
+function ssAddToolTip(className, toolTipText, top, left) {
+  if (ssExists(className)) {
+    ssGetElement(className).classList.add("tooltip-parent");
+    ssGetElement(className).innerHTML +=
+      '<span class="tooltiptext ' +
+      "tooltip-" +
+      className +
+      '">' +
+      toolTipText +
+      "</span>";
+    var toolTipElement = ssGetNonMoodElement("tooltip-" + className);
+    toolTipElement.style.top = top;
+    toolTipElement.style.left = left;
+  } else {
+    return null;
   }
-  
-  
-  /**
-   * @desc - Destroy target element. It can't be regenerated.
-   * @param {STRING} - Name of the element
-   */
-  function ssKill(className) {
-    if (ssExists(className)) {
-      document.querySelector(".mood-node-name-" + className).remove();
-    } else {
-      return null;
-    }
-  }
-  
-  
-  /**
-   * @desc - Add an "explanation-text/tooltip" to an element, that will display when the cursor hover overs it
-   * @param {String} - Name of the element
-   * @param {String} - The text to be displayed. This can be a long text.
-   * @param {String} - Top position in pixels example "0px" or "-150px" or "150px"
-   * @param {String} - Left position in pixels example "0px" or "-150px" or "150px"
-   */
-  function ssAddToolTip(className, toolTipText, top, left) {
-    if (ssExists(className)) {
-      ssGetElement(className).classList.add("tooltip-parent");
-      ssGetElement(className).innerHTML +=
-        '<span class="tooltiptext ' +
-        "tooltip-" +
-        className +
-        '">' +
-        toolTipText +
-        "</span>";
-      var toolTipElement = ssGetNonMoodElement("tooltip-" + className);
-      toolTipElement.style.top = top;
-      toolTipElement.style.left = left;
-    } else {
-      return null;
-    }
-  }
-  
+}
 
 /* Get Value functions */
 function ssInfopanelValue(name) {
-    if ($(".mood-node-name-" + name).length > 0)
-        return $(".mood-node-name-" + name).text().trim();
-    return 0;
+  if ($(".mood-node-name-" + name).length > 0)
+      return $(".mood-node-name-" + name).text().trim();
+  return 0;
 }
 
 function ssSingleSelectValue(name) {
-    if (!$(".mood-node-name-" + name).length > 0) return "";
-    var text = $(".mood-node-name-" + name)[0].innerText;
-    if (text == "Select...")
-        return "";
-    else
-        return text;
+  if (!$(".mood-node-name-" + name).length > 0) return "";
+  var text = $(".mood-node-name-" + name)[0].innerText;
+  if (text == "Select...")
+      return "";
+  else
+      return text;
 }
 
 function ssTextAreaValue(name) {
-    if ($(".mood-node-name-" + name + " textarea").length > 0)
-        return $(".mood-node-name-" + name + " textarea").val();
-    return 0;
+  if ($(".mood-node-name-" + name + " textarea").length > 0)
+      return $(".mood-node-name-" + name + " textarea").val();
+  return 0;
 }
 
 function ssTexteditorValue(name) {
-    return ssDropdownValue(name);
+  return ssDropdownValue(name);
 }
 
 function ssCalendarValue(name) {
-    return ssDropdownValue(name);
+  return ssDropdownValue(name);
 }
 
 function ssDropdownValue(name) {
-    if ($(".mood-node-name-" + name + " input").length > 0 && $(".mood-node-name-" + name + " input")[0].value)
-        return $(".mood-node-name-" + name + " input")[0].value.trim();
-    else
-        return 0;
+  if ($(".mood-node-name-" + name + " input").length > 0 && $(".mood-node-name-" + name + " input")[0].value)
+      return $(".mood-node-name-" + name + " input")[0].value.trim();
+  else
+      return 0;
 }
 
 function ssRadiobuttons(name) {
-    return $(".mood-node-name-" + name + " .dx-list-item-selected .list-item-text").text().trim();
+  return $(".mood-node-name-" + name + " .dx-list-item-selected .list-item-text").text().trim();
 }
 
 function ssRadiobuttonsCount(name) {
-    if (ssExists(name))
-        return $(".mood-node-name-" + name + " .dx-list-item").length;
-    return 0;
+  if (ssExists(name))
+      return $(".mood-node-name-" + name + " .dx-list-item").length;
+  return 0;
 }
 
 function ssHtmlValue(name) {
-    //Returns undefined on missing element, no errors.
-    return $(".mood-node-name-" + name).html();
+  //Returns undefined on missing element, no errors.
+  return $(".mood-node-name-" + name).html();
 }
 
 function ssReturnDollarNodeName(name) {
-    return $(".mood-node-name-" + name);
+  return $(".mood-node-name-" + name);
 }
 
 function ssReturnDollarAndText(text) {
-    return $(text);
+  return $(text);
 }
 
 function ssReturnHrefLink(text, link) {
-    return $(text).attr("href", link); //The link taken as a parameter has to be defined as a var first
+  return $(text).attr("href", link); //The link taken as a parameter has to be defined as a var first
 }
 
 /**
@@ -203,7 +194,6 @@ function ssGetElement(className) {
   return null;
 }
 
-
 /**
  * @desc - Get a collection of HTML element from the DOM
  * @param {String} - Class name of the elements
@@ -216,7 +206,6 @@ function ssGetAllElements(className) {
   return null;
 }
 
-
 /**
  * @desc - Get an element from the DOM not injected by MooD or one that doesn't have mood-node-name-class-name as it's class name
  * @param {String} - Class name of the element
@@ -228,7 +217,6 @@ function ssGetNonMoodElement(className) {
   }
   return null;
 }
-
 
 /**
  * @desc - Get the value of the text wrapped by an HTML element (what is visible to the user)
@@ -244,7 +232,6 @@ function ssGetInnerText(className) {
   return null;
 }
 
-
 /**
  * @desc - Get the length of a text in an element as number of characters. Can be used to evaluate if an element is empty.
  * @param {String} - Name of the element
@@ -258,7 +245,6 @@ function ssGetInnerTextLength(className) {
   }
   return null;
 }
-
 
 /**
  * @desc - Get the textContent property of an element. Sometomes MooD doesn't set text as innerText, but instead with the textContent property. In that case, use this function.
@@ -274,7 +260,6 @@ function ssGetTextContent(className) {
   return null;
 }
 
-
 /**
  * @desc - Get the value of a MooD generated infopanel
  * @param {String} - Name of the element
@@ -287,7 +272,6 @@ function ssInfopanelValue(name) {
       .trim();
   return 0;
 }
-
 
 /**
  * @desc - Get a tab as an HTML element
@@ -327,7 +311,6 @@ function ssCheckRadioButtonValues(value, className, index) {
   return false;
 }
 
-
 /**
  * @desc -  Checks if an inut field is a certain length of characters
  * @param {String} className - Name of the element
@@ -351,7 +334,6 @@ function ssValidateInputLength(className, childtag, length) {
   }
 }
 
-
 /**
  * @desc - Get the value attribute of an element with text input
  * @param {String} className - Name of the element
@@ -365,7 +347,6 @@ function ssGetValueAttribute(className) {
     return null;
   }
 }
-
 
 /**
  * @desc - Get the value (title attribute) of an element selected using the Multi Select Dropdown
@@ -382,76 +363,65 @@ function ssGetValueFromMultiSelectDropdown(className) {
   }
 }
 
-
 /* Other functionality */
 function ssHide(name) {
-    $(".mood-node-name-" + name).css("visibility", "hidden");
+  $(".mood-node-name-" + name).css("visibility", "hidden");
 }
 
 //Hides a menu item based on the name of the menu item, for example Data Quality. Is case sensitive
 function ssHideMenuItem(name) {
-    var text = name;
-    $('a').filter(function () {
-        return $(this).text() === text;
-    }).hide();
+  var text = name;
+  $('a').filter(function () {
+      return $(this).text() === text;
+  }).hide();
 }
 
 function ssShow(name) {
-    $(".mood-node-name-" + name).css("visibility", "visible");
+  $(".mood-node-name-" + name).css("visibility", "visible");
 }
 
 function ssClickButton(name) {
-    if (!$(".mood-node-name-" + name).length > 0) return 0;
-    $(".mood-node-name-" + name + " .mood-button").click();
-    return 1;
+  if (!$(".mood-node-name-" + name).length > 0) return 0;
+  $(".mood-node-name-" + name + " .mood-button").click();
+  return 1;
 }
 
 function ssExists(name) {
-    if ($(".mood-node-name-" + name) && $(".mood-node-name-" + name).length > 0)
-        return $(".mood-node-name-" + name).length;
-    return null;
+  if ($(".mood-node-name-" + name) && $(".mood-node-name-" + name).length > 0)
+      return $(".mood-node-name-" + name).length;
+  return null;
 }
 
 //Arguments:
 // name: of timeline matrix
 // top: boolean to set to top or bottom
 function ssTimelineArrowsOnTop(name, top) {
-    if (top) {
-        $(".mood-node-name-" + name + " .MooDOverlayContainer ").css("z-index", "9999");
-    }
-    else
-        $(".mood-node-name-" + name + " .MooDOverlayContainer ").css("z-index", "0");
+  if (top) {
+      $(".mood-node-name-" + name + " .MooDOverlayContainer ").css("z-index", "9999");
+  }
+  else
+      $(".mood-node-name-" + name + " .MooDOverlayContainer ").css("z-index", "0");
 }
 
 function ssObserveNotificationBar(searchFor, functionref) {
-    var ssNotificationBarObserver = new MutationObserver(function () {
-        var text = $(".NotificationBar span").text().trim();
-        var shown = $(".NotificationBar span").css("visibility") == 'visible';
-        if (shown && text.length > 4 && text == searchFor) {
-            if (!wasShown) {
-                //console.info("*** Function called.");
-                functionref();
-            }
-            wasShown = 1;
-        }
+  var ssNotificationBarObserver = new MutationObserver(function () {
+      var text = $(".NotificationBar span").text().trim();
+      var shown = $(".NotificationBar span").css("visibility") == 'visible';
+      if (shown && text.length > 4 && text == searchFor) {
+          if (!wasShown) {
+              //console.info("*** Function called.");
+              functionref();
+          }
+          wasShown = 1;
+      }
 
-        if (wasShown && !shown) {
-            wasShown = 0;
-            //console.info("*** Bar hidden, reset.");
-        }
-    });
+      if (wasShown && !shown) {
+          wasShown = 0;
+          //console.info("*** Bar hidden, reset.");
+      }
+  });
 
-    if ($(".NotificationBar").length > 0)
-        ssNotificationBarObserver.observe($(".NotificationBar")[0], { attributes: true, childList: false, subtree: true });
-    //console.info("*** Observer in place.");
-}
-
-  
-  
-  
-  
-
-
-
-
+  if ($(".NotificationBar").length > 0)
+      ssNotificationBarObserver.observe($(".NotificationBar")[0], { attributes: true, childList: false, subtree: true });
+  //console.info("*** Observer in place.");
 }
