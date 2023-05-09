@@ -637,6 +637,28 @@ function ssOpenColumnElementsInNewTab(typeIdOfColumnElement) {
   }
 }
 
+/**
+ * @desc - Add the default icon to a selected element in a dropdown.
+ * @param {String} className - name of the dropdown
+ */
+function addIconToDropdown(className) {
+  function handleClick() {
+    ssGetElement(className + " img.icons").style.display = "block";
+    ssGetElement(className + " img.icons").style.left = "360px";
+
+    setTimeout(() => {
+      ssGetElement(className + " img.icons").style.display = "block";
+      ssGetElement(className + " img.icons").style.left = "360px";
+    }, 1500);
+  }
+
+  function fireWhenDropdownClose() {
+    ssGetElement(className).addEventListener("click", handleClick);
+    ssGetElement(className).click();
+  }
+  fireWhenDropdownClose();
+}
+
 /******************** MESSAGING FUNCTIONS *************************/
 
 /**
