@@ -663,6 +663,7 @@ function addIconToDropdown(className) {
  * @desc - Make a single clickable element that links to a Model Master open in a new tab.
  * @param {String} - The name of of the element
  */
+
 function ssOpenLinkInNewTab(className) {
   document
     .querySelector(".mood-node-name-" + className + " a")
@@ -675,7 +676,6 @@ function ssOpenLinkInNewTab(className) {
  * @param {String} tabName - The name of parent tab, which hosts the subtab, you want to insert the count into
  * @param {String} innerTabName - The name of the child tab, you want to insert the count into
  */
-//prettier-ignore
 function ssAddCountOfMyActionsHandler(classNameCount, tabName, innerTabName) {
   const numberOfMyActions = ssGetInnerText(classNameCount);
   let count = 0;
