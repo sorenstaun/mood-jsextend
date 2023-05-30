@@ -659,6 +659,48 @@ function addIconToDropdown(className) {
   fireWhenDropdownClose();
 }
 
+/**
+ * @desc - Make a single clickable element that links to a Model Master open in a new tab.
+ * @param {String} - The name of of the element
+ */
+
+function ssOpenLinkInNewTab(className) {
+  document
+    .querySelector(".mood-node-name-" + className + " a")
+    .setAttribute("target", "_blank");
+}
+
+/**
+ * @desc - Add a count (the result of a MooD query that counts elements) to a specific tab in a dropdown menu item.
+ * @param {String} classNameCount - The name of of the element
+ * @param {String} tabName - The name of parent tab, which hosts the subtab, you want to insert the count into
+ * @param {String} innerTabName - The name of the child tab, you want to insert the count into
+ */
+function ssAddCountOfMyActionsHandler(classNameCount, tabName, innerTabName) {
+  const numberOfMyActions = ssGetInnerText(classNameCount);
+  let count = 0;
+  if (numberOfMyActions > 0 && count == 0) {
+    count++;
+
+    const listelement = ssGetTab(tabName);
+
+    function handleClick() {
+      listelement.removeEventListener("click", handleClick);
+      setTimeout(() => {
+        const innerTab = ssGetTab(innerTabName);
+        const linkElement = innerTab.querySelector("a");
+        const numSpan = document.createElement("span");
+        numSpan.textContent = numberOfMyActions;
+        numSpan.style.marginLeft = "10px";
+        numSpan.style.float = "right";
+        linkElement.appendChild(numSpan);
+      }, 500);
+    }
+
+    listelement.addEventListener("click", handleClick);
+  }
+}
+
 /******************** MESSAGING FUNCTIONS *************************/
 
 /**
