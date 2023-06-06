@@ -676,7 +676,7 @@ function ssOpenLinkInNewTab(className) {
  * @param {String} tabName - The name of parent tab, which hosts the subtab, you want to insert the count into
  * @param {String} innerTabName - The name of the child tab, you want to insert the count into
  */
-function ssAddCountOfMyActionsHandler(classNameCount, tabName, innerTabName) {
+function ssAddCountOfMyActions(classNameCount, tabName, innerTabName) {
   const numberOfMyActions = ssGetInnerText(classNameCount);
   let count = 0;
   if (numberOfMyActions > 0 && count == 0) {
