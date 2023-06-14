@@ -251,6 +251,17 @@ function ssGetTab(className) {
 }
 
 /**
+ * @desc - Due to difference in environments, this is a custom implementation of ssAddCountOfMyActions for IT Landscape. This implementation should be used if you are handling a menu with multiple tabs of the same name. Get a tab as an HTML element
+ * @param {String} - Name of the tab
+ * @returns {HTML} - The HTML of the Tab
+ */
+function ssGetTabItLandscape(className) {
+  return Array.from(document.querySelectorAll("li")).filter(
+    (el) => el.textContent === className
+  );
+}
+
+/**
  * @desc - Get all element of a given tag
  * @param {String} - The tag e.g. p, h1 or img
  * @returns {HTML} - The HTML of all the tags
@@ -695,6 +706,40 @@ function ssAddCountOfMyActions(classNameCount, tabName, innerTabName) {
         numSpan.style.float = "right";
         linkElement.appendChild(numSpan);
       }, 500);
+    }
+
+    listelement.addEventListener("click", handleClick);
+  }
+}
+
+/**
+ * @desc - Due to difference in environments, this is a custom implementation of ssAddCountOfMyActions for IT Landscape. This implementation should be used if you are handling a menu with multiple tabs of the same name. Add a count (the result of a MooD query that counts elements) to a specific tab in a dropdown menu item.
+ * @param {String} classNameCount - The name of of the element
+ * @param {String} tabName - The name of parent tab, which hosts the subtab, you want to insert the count into
+ * @param {String} innerTabName - The name of the child tab, you want to insert the count into
+ * @param {Integer} tabIndex - The index of the tab saved in the array "listelement"
+ * @param {Integer} innerTabIndex - The index of the innerTab saved in the array "innerTab"
+ */
+//prettier-ignore
+function ssAddCountOfMyActionsItLandscape(classNameCount, tabName, innerTabName, tabIndex, innerTabIndex) {
+  const numberOfMyActions = ssGetInnerText(classNameCount);
+  let count = 0;
+  if (numberOfMyActions > 0 && count == 0) {
+    count++;
+
+    const listelement = ssGetTabItLandscape(tabName)[tabIndex];
+
+    function handleClick() {
+      listelement.removeEventListener("click", handleClick);
+      setTimeout(() => {
+        const innerTab = ssGetTabItLandscape(innerTabName)[innerTabIndex];
+        const linkElement = innerTab.querySelector("a");
+        const numSpan = document.createElement("span");
+        numSpan.textContent = numberOfMyActions;
+        numSpan.style.marginLeft = "20px";
+        numSpan.style.float = "right";
+        linkElement.appendChild(numSpan);
+      }, 250);
     }
 
     listelement.addEventListener("click", handleClick);
