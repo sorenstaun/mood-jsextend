@@ -450,7 +450,8 @@ function ssObserveNotificationBar(searchFor, functionref) {
  */
 function ssSetTexteditorValue(name, val) {
   $(".mood-node-name-" + name + " input")[0].value = val;
-  $(".mood-node-name-" + name + " input")[1].value = val;
+  if ($(".mood-node-name-" + name + " input").length >1)
+     $(".mood-node-name-" + name + " input")[1].value = val;
 }
 
 /**
